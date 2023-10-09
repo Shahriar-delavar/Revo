@@ -14,10 +14,27 @@
     <!--
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script> -->
-    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css"
         integrity="sha256-XoaMnoYC5TH6/+ihMEnospgm0J1PM/nioxbOUdnM8HY=" crossorigin="anonymous">
+
+
+
+    <style>
+        @media print {
+            body {
+                visibility: hidden;
+            }
+
+            #report-box {
+                visibility: visible;
+                position: absolute;
+                left: 0;
+                top: 0;
+            }
+        }
+    </style>
 
 </head>
 
@@ -93,15 +110,28 @@
 
                 <div class="flex flex-col items-center">
                     <button type="button" id="compile-button"
-                        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded max-w-[50%]">Compile</button>
+                        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded max-w-[50%]">Generate report</button>
+                </div>
+
+                <div class="flex justify-center space-x-4 leading-6 bg-stripes-blue rounded-lg">
+                    <p>Exports</p>
+                    <button type="button" id="pdf-button"
+                        class=" hover:bg-blue-200  rounded">
+                        <i class="fa fa-file-pdf-o fa-2x" aria-hidden="true"></i></button>
+
+
+                    <button type="button" id="print-button"
+                        class=" hover:bg-blue-200   rounded ">
+                        <i class="fa fa-print fa-2x" aria-hidden="true"></i>
+                    </button>
+
                 </div>
 
             </form>
         </sidebar>
-        <main id="rendererBox" class="w-4/5 mt-2 border-solid border-2 border-gray-200 m-5 rounded-lg">
-            <button type="button" id="pdf-button"
-                class="bg-blue-500 hover:bg-blue-700 text-white font-bold p-2 m-5  rounded max-w-[50%] float-right">
-                <i class="fa fa-file-pdf-o float-right" aria-hidden="true"></i></button>
+        <main id="rendererBox" class=" w-4/5 mt-2 border-solid border-2 border-gray-200 m-5 rounded-lg">
+
+
             <div id="report-box" class="p-10 max-h-[90%] overflow-y-scroll"></div>
         </main>
     </div>
@@ -267,6 +297,12 @@
             // Choose the element and save the PDF for your user.
             html2pdf().from(element).save();
         })
+
+        $("#print-button").click(() => {
+            console.log("clicked");
+            window.print();
+        })
+
 
 
     </script>
