@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RevoMann </title>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"
+        integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <!--
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script> -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css"
+        integrity="sha256-XoaMnoYC5TH6/+ihMEnospgm0J1PM/nioxbOUdnM8HY=" crossorigin="anonymous">
+
+</head>
+
+<body>
+    <div class="flex h-screen">
+        <sidebar class="w-1/5">
+            <img src="./images/logo.svg" alt="" class="h-32">
+            <form action="" class="w-full flex flex-col space-y-4 p-5">
+                <h4 class="my-auto font-bold text-lg text-gray-500">
+                    RevoMann 3D Modeler
+                </h4>
+
+
+                <div class="flex flex-col items-center">
+                    <select name="" id=""
+                        class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline text-gray-700">
+                        <option value="T1">Beam calculation sample</option>
+                    </select>
+
+                </div>
+                <div class="md:flex md:items-center mb-6">
+                    <div class="md:w-1/5">
+                        <label class="inline-block text-gray-900 font-bold md:text-right mb-1 md:mb-0 pr-4"
+                            for="beam-length">
+                            L
+                        </label>
+                    </div>
+                    <div class="md:w-4/5">
+                        <input placeholder="length of beam (m)"
+                            class="border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                            id="beam-length">
+                    </div>
+                </div>
+                <div class="md:flex md:items-center mb-6">
+                    <div class="md:w-1/5">
+                        <label class="inline-block text-gray-900 font-bold md:text-right mb-1 md:mb-0 pr-4"
+                            for="beam-cs-tickness">
+                            t
+                        </label>
+                    </div>
+                    <div class="md:w-4/5">
+                        <input placeholder="cross section thickness (mm)"
+                            class="border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                            id="beam-cs-tickness">
+                    </div>
+                </div>
+                <div class="md:flex md:items-center mb-6">
+                    <div class="md:w-1/5">
+                        <label class="inline-block text-gray-900 font-bold md:text-right mb-1 md:mb-0 pr-4"
+                            for="beam-side">
+                            b
+                        </label>
+                    </div>
+                    <div class="md:w-4/5">
+                        <input placeholder="side"
+                            class="border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                            id="beam-side">
+                    </div>
+                </div>
+                <div class="md:flex md:items-center mb-6">
+                    <div class="md:w-1/5">
+                        <label class="inline-block text-gray-900 font-bold md:text-right mb-1 md:mb-0 pr-4"
+                            for="line-load">
+                            H
+                        </label>
+                    </div>
+                    <div class="md:w-4/5">
+                        <input placeholder="uniformly distributed line load (kN/m)"
+                            class="border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                            id="line-load">
+                    </div>
+                </div>
+
+                <div class="flex flex-col items-center">
+                    <button type="button" id="compile-button"
+                        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded max-w-[50%]">Compile</button>
+                </div>
+
+            </form>
+        </sidebar>
+        <main id="rendererBox" class="w-4/5 mt-2 border-solid border-2 border-gray-200 m-5 rounded-lg">
+            <button type="button" id="pdf-button"
+                class="bg-blue-500 hover:bg-blue-700 text-white font-bold p-2 m-5  rounded max-w-[50%] float-right">
+                <i class="fa fa-file-pdf-o float-right" aria-hidden="true"></i></button>
+            <div id="report-box" class="p-10 max-h-[90%] overflow-y-scroll"></div>
+        </main>
+    </div>
+
+    <script>
+
+
+
+        calculate = (vals) => {
+
+            const pythagorean = `<math>
+                                    <mrow>
+                                        <msup>
+                                        <mi>a</mi>
+                                        <mn>2</mn>
+                                        </msup>
+                                        <mo>+</mo>
+                                        <msup>
+                                        <mi>b</mi>
+                                        <mn>2</mn>
+                                        </msup>
+                                        <mo>=</mo>
+                                        <msup>
+                                        <mi>c</mi>
+                                        <mn>2</mn>
+                                        </msup>
+                                    </mrow>
+                                    </math>`
+
+            console.log(vals);
+
+            const b = parseInt(vals.b);
+            const t = parseInt(vals.t);
+            const A = 1;
+
+            const Area = parseFloat((b ** 2) - ((b - (0.2 * t)) ** 2));
+            const LL = ((Area * (10 ** -4)) * 9.81 * 7.85) + vals.H
+
+            const result = {
+
+                formulas: {
+                    Pythagorean: { annotation: pythagorean }
+                },
+
+                calculations: {
+                    "Area": { val: Area , unit : ""},
+                    "LL": { val: LL , unit : ""}
+                },
+                output: {
+                    Fx: { val: vals.H * vals.L, unit: "kN" },
+                    Mz: { val: ((vals.L ** 2) / 2) * LL, unit: "kN/m" },
+                    Fy: { val: LL * vals.L, unit: "kN" }
+                }
+            };
+
+
+
+            return result;
+        }
+
+        convertToTable = (data) => {
+            console.log(data);
+            let formulas = "";
+            let rows = "";
+            let calcs = "";
+
+            convertOutputs = (el) => {
+
+                const key = el[0];
+                const val = el[1];
+
+                if (val.hasOwnProperty("val") && val.hasOwnProperty("unit")) {
+                    return `<tr>
+                        <td class="p-2 whitespace-nowrap font-medium text-gray-800">${key}</td>
+                        <td class="p-2 whitespace-nowrap">${val.val}</td>
+                        <td class="p-2 whitespace-nowrap">${val.unit}</td>
+                        </tr>`;
+                } else console.log(key, val)
+            }
+
+            convertCalculations = (cal) => {
+                return `<p>${cal[0]} : ${cal[1].val}  ${cal[1].unit}</p>`;
+            }
+
+            convertFormulas = (fr) => {
+                return `<p>${fr[0]} : ${fr[1].annotation}</p>`;
+            }
+
+            Object.entries(data.output)
+                .forEach(el => {
+                    rows += convertOutputs(el);
+                });
+            Object.entries(data.calculations)
+                .forEach(el => {
+                    calcs += convertCalculations(el);
+                });
+            Object.entries(data.formulas)
+                .forEach(fr => {
+                    formulas += convertFormulas(fr);
+                })
+
+
+
+                let result = "";
+
+            return `
+
+            <div>
+                ${calcs}
+                </div>
+            <div>
+                <table class="table-auto w-[50%] mt-2">
+                        <thead class="text-left text-lg font-semibold uppercase text-gray-400 bg-gray-50">
+                            <tr>
+                            <th class="p-2 whitespace-nowrap">Parameter</th>
+                            <th class="p-2 whitespace-nowrap">Value</th>
+                            <th class="p-2 whitespace-nowrap">Unit</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                          ${rows}
+                        </tbody>
+                        </table>
+            </div>
+
+                        <div>
+                            <p>${formulas}</p>
+                            </div>
+
+                        ` ;
+
+                        return result;
+        }
+
+        renderFormulas = (data) => {
+            return ``
+        }
+        $("#compile-button").click(() => {
+
+            $("#report-box").empty();
+            $("#report-box").html(`<i class="fa fa-spinner fa-spin fa-3x fa-fw text-blue-200"></i>`);
+            setTimeout(() => {
+                const vals = {
+                    L: parseInt($("#beam-length").val()),
+                    t: parseInt($("#beam-cs-tickness").val()),
+                    b: parseInt($("#beam-side").val()),
+                    H: parseInt($("#line-load").val())
+                }
+
+                $("#report-box").empty();
+                $("#report-box").append(`<img src="./images/client-logo.png">`);
+                $("#report-box").append(convertToTable(calculate(vals)));
+                $("#report-box").append(`<img src="./images/sample.png">`);
+
+            }, 2000)
+        })
+
+        $("#pdf-button").click(() => {
+            console.log("clicked");
+
+            // Default export is a4 paper, portrait, using millimeters for units
+            const element = document.getElementById('report-box');
+            // Choose the element and save the PDF for your user.
+            html2pdf().from(element).save();
+        })
+
+
+    </script>
+
+</body>
+
+
+</html>
