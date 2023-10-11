@@ -1,0 +1,44 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>RevoMann </title><script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin></script><script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin referrerpolicy="no-referrer"></script><script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js"></script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css" integrity="sha256-XoaMnoYC5TH6/+ihMEnospgm0J1PM/nioxbOUdnM8HY=" crossorigin><style>@media print{body{visibility:hidden}#report-box{visibility:visible;position:absolute;top:0;left:0}}</style></head><body> <div class="flex h-screen"> <sidebar class="w-1/5"> <img src="/logo.ecefdd8c.svg" alt class="h-32"> <form class="flex flex-col p-5 space-y-4 w-full"> <h4 class="font-bold my-auto text-gray-500 text-lg"> RevoMann 3D Modeler </h4> <h6> Calculation Examples </h6> <div class="flex flex-col items-center"> <select class="appearance-none bg-white block border border-gray-400 focus:outline-none focus:shadow-outline hover:border-gray-500 leading-tight pr-8 px-4 py-2 rounded shadow text-gray-700 w-full"> <option value="T1">Col with a Fx Sup Rec Hollow CS</option> </select> </div> <div class="mb-6 md:flex md:items-center"> <div class="md:w-1/5"> <label class="font-bold inline-block mb-1 md:mb-0 md:text-right pr-4 text-gray-900" for="beam-length"> L (m) </label> </div> <div class="md:w-4/5"> <input placeholder="length of beam" class="border-2 border-gray-200 focus:bg-white focus:border-gray-500 focus:outline-none leading-tight px-4 py-2 rounded text-gray-700 w-full" id="beam-length"> </div> </div> <div class="mb-6 md:flex md:items-center"> <div class="md:w-1/5"> <label class="font-bold inline-block mb-1 md:mb-0 md:text-right pr-4 text-gray-900" for="beam-cs-tickness"> t (mm) </label> </div> <div class="md:w-4/5"> <input placeholder="cross section thickness " class="border-2 border-gray-200 focus:bg-white focus:border-gray-500 focus:outline-none leading-tight px-4 py-2 rounded text-gray-700 w-full" id="beam-cs-tickness"> </div> </div> <div class="mb-6 md:flex md:items-center"> <div class="md:w-1/5"> <label class="font-bold inline-block mb-1 md:mb-0 md:text-right pr-4 text-gray-900" for="beam-side"> b (cm) </label> </div> <div class="md:w-4/5"> <input placeholder="width = height of CS" class="border-2 border-gray-200 focus:bg-white focus:border-gray-500 focus:outline-none leading-tight px-4 py-2 rounded text-gray-700 w-full" id="beam-side"> </div> </div> <div class="mb-6 md:flex md:items-center"> <div class="md:w-1/5"> <label class="font-bold inline-block mb-1 md:mb-0 md:text-right pr-4 text-gray-900" for="line-load"> H (m) </label> </div> <div class="md:w-4/5"> <input placeholder="uniformly distributed line load " class="border-2 border-gray-200 focus:bg-white focus:border-gray-500 focus:outline-none leading-tight px-4 py-2 rounded text-gray-700 w-full" id="line-load"> </div> </div> <div class="flex flex-col items-center"> <button type="button" id="compile-button" class="bg-blue-500 font-bold hover:bg-blue-700 max-w-[50%] px-4 py-2 rounded text-white">Generate report</button> </div> <div class="bg-stripes-blue flex justify-center leading-6 rounded-lg space-x-4"> <p>Exports</p> <button type="button" id="pdf-button" class="hover:bg-blue-200 rounded"> <i class="fa fa-2x fa-file-pdf-o" aria-hidden="true"></i></button> <button type="button" id="print-button" class="hover:bg-blue-200 rounded"> <i class="fa fa-2x fa-print" aria-hidden="true"></i> </button> </div> </form> </sidebar> <main id="rendererBox" class="border-2 border-gray-200 border-solid m-5 mt-2 rounded-lg w-4/5"> <div id="report-box" class="max-h-[90%] overflow-y-scroll p-10"></div> </main> </div> <script>calculate=t=>{let e=`<math><mrow><msup>
+                                        <mi>a</mi>
+                                        <mn>2</mn>
+                                        </msup>
+                                        <mo>+</mo>
+                                        <msup>
+                                        <mi>b</mi>
+                                        <mn>2</mn>
+                                        </msup>
+                                        <mo>=</mo>
+                                        <msup>
+                                        <mi>c</mi>
+                                        <mn>2</mn>
+                                        </msup></mrow></math>`,a=parseInt(t.b),o=parseInt(t.t),n=parseFloat(a**2-(a-.2*o)**2),r=.00770085*n+t.H,l={formulas:{Pythagorean:{annotation:e}},calculations:{Area:{val:n,unit:""},LL:{val:r,unit:""}},output:{Fx:{val:t.H*t.L,unit:"kN"},Mz:{val:t.L**2/2*r,unit:"kN/m"},Fy:{val:r*t.L,unit:"kN"}}};return l},convertToTable=t=>{console.log(t);let e="",a="",o="";return convertOutputs=t=>{let e=t[0],a=t[1];if(a.hasOwnProperty("val")&&a.hasOwnProperty("unit"))return`<tr>
+                        <td class="p-2 whitespace-nowrap font-medium text-gray-800">${e}</td>
+                        <td class="p-2 whitespace-nowrap">${a.val}</td>
+                        <td class="p-2 whitespace-nowrap">${a.unit}</td>
+                        </tr>`;console.log(e,a)},convertCalculations=t=>`<p>${t[0]} : ${t[1].val}  ${t[1].unit}</p>`,convertFormulas=t=>`<p>${t[0]} : ${t[1].annotation}</p>`,Object.entries(t.output).forEach(t=>{a+=convertOutputs(t)}),Object.entries(t.calculations).forEach(t=>{o+=convertCalculations(t)}),Object.entries(t.formulas).forEach(t=>{e+=convertFormulas(t)}),`
+
+            <div>
+                ${o}
+                </div>
+            <div>
+                <table class="table-auto w-[50%] mt-2">
+                        <thead class="text-left text-lg font-semibold uppercase text-gray-400 bg-gray-50">
+                            <tr>
+                            <th class="p-2 whitespace-nowrap">Parameter</th>
+                            <th class="p-2 whitespace-nowrap">Value</th>
+                            <th class="p-2 whitespace-nowrap">Unit</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                          ${a}
+                        </tbody>
+                        </table>
+            </div>
+
+                        <div>
+                            <p>${e}</p>
+                            </div>
+
+                        `},renderFormulas=t=>"",$("#compile-button").click(()=>{$("#report-box").empty(),$("#report-box").html('<i class="fa fa-spinner fa-spin fa-3x fa-fw text-blue-200"></i>'),setTimeout(()=>{let t={L:parseInt($("#beam-length").val()),t:parseInt($("#beam-cs-tickness").val()),b:parseInt($("#beam-side").val()),H:parseInt($("#line-load").val())};$("#report-box").empty(),$("#report-box").append('<img src="./images/client-logo.png">'),$("#report-box").append(convertToTable(calculate(t))),$("#report-box").append('<img src="./images/sample.png">')},2e3)}),$("#pdf-button").click(()=>{console.log("clicked");// Default export is a4 paper, portrait, using millimeters for units
+let t=document.getElementById("report-box");// Choose the element and save the PDF for your user.
+html2pdf().from(t).save()}),$("#print-button").click(()=>{console.log("clicked"),window.print()});</script> </body></html>
