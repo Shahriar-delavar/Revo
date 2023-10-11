@@ -4,7 +4,7 @@
   "description": "",
 
   "scripts": {
-    "clean-dist" :"rm -rf dist && mkdir dist",
+    "clean-dist" :"rm -rf dist && rm -rf .parcel-cache && mkdir dist",
     "copy-img" :"cp -vR ./images ./dist",
     "build": "npm run clean-dist && npm run copy-img && parcel build index.html"
   },
