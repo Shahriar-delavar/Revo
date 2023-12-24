@@ -2,292 +2,814 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RevoMann </title>
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
-        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"
-        integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <!--
-    <script src="https://html2canvas.hertzen.com/dist/html2canvas.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script> -->
-    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css"
-        integrity="sha256-XoaMnoYC5TH6/+ihMEnospgm0J1PM/nioxbOUdnM8HY=" crossorigin="anonymous">
-    <style>
-        @media print {
-            body {
-                visibility: hidden;
-            }
-
-            #report-box {
-                visibility: visible;
-                position: absolute;
-                left: 0;
-                top: 0;
-            }
-        }
-    </style>
-
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RevoMann - Engineering</title>
+    <link rel="icon" href="favicon.ico">
+    <link href="style.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body>
-    <div class="flex h-screen">
-        <sidebar class="w-1/5">
-            <img src="./images/logo.svg" alt="" class="h-32">
-            <form action="" class="w-full flex flex-col space-y-4 p-5">
-                <h4 class="my-auto font-bold text-lg text-gray-500">
-                    RevoMann 3D Modeler
-                </h4>
-
-                <h6>
-                    Calculation Examples
-                </h6>
-
-                <div class="flex flex-col items-center">
-                    <select name="" id=""
-                        class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline text-gray-700">
-                        <option value="T1">Col with a Fx Sup Rec Hollow CS</option>
-                    </select>
-                </div>
-
-                <div class="md:flex md:items-center mb-6">
-                    <div class="md:w-1/5">
-                        <label class="inline-block text-gray-900 font-bold md:text-right mb-1 md:mb-0 pr-4"
-                            for="beam-length">
-                            L (m)
-                        </label>
-                    </div>
-                    <div class="md:w-4/5">
-                        <input placeholder="length of beam"
-                            class="border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                            id="beam-length">
-                    </div>
-                </div>
-                <div class="md:flex md:items-center mb-6">
-                    <div class="md:w-1/5">
-                        <label class="inline-block text-gray-900 font-bold md:text-right mb-1 md:mb-0 pr-4"
-                            for="beam-cs-tickness">
-                            t (mm)
-                        </label>
-                    </div>
-                    <div class="md:w-4/5">
-                        <input placeholder="cross section thickness "
-                            class="border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                            id="beam-cs-tickness">
-                    </div>
-                </div>
-                <div class="md:flex md:items-center mb-6">
-                    <div class="md:w-1/5">
-                        <label class="inline-block text-gray-900 font-bold md:text-right mb-1 md:mb-0 pr-4"
-                            for="beam-side">
-                            b (cm)
-                        </label>
-                    </div>
-                    <div class="md:w-4/5">
-                        <input placeholder="width = height of CS"
-                            class="border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                            id="beam-side">
-                    </div>
-                </div>
-                <div class="md:flex md:items-center mb-6">
-                    <div class="md:w-1/5">
-                        <label class="inline-block text-gray-900 font-bold md:text-right mb-1 md:mb-0 pr-4"
-                            for="line-load">
-                            H (m)
-                        </label>
-                    </div>
-                    <div class="md:w-4/5">
-                        <input placeholder="uniformly distributed line load "
-                            class="border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                            id="line-load">
-                    </div>
-                </div>
-
-                <div class="flex flex-col items-center">
-                    <button type="button" id="compile-button"
-                        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded max-w-[50%]">Generate report</button>
-                </div>
-
-                <div class="flex justify-center space-x-4 leading-6 bg-stripes-blue rounded-lg">
-                    <p>Exports</p>
-
-                    <button type="button" id="pdf-button"
-                        class=" hover:bg-blue-200  rounded">
-                        <i class="fa fa-file-pdf-o fa-2x" aria-hidden="true"></i></button>
-
-                    <button type="button" id="print-button"
-                        class=" hover:bg-blue-200   rounded ">
-                        <i class="fa fa-print fa-2x" aria-hidden="true"></i>
-                    </button>
-
-                </div>
-
-            </form>
-        </sidebar>
-        <main id="rendererBox" class=" w-4/5 mt-2 border-solid border-2 border-gray-200 m-5 rounded-lg">
-            <div id="report-box" class="p-10 max-h-[90%] overflow-y-scroll"></div>
-        </main>
+<body
+    x-data="{ page: 'home', 'loaded': true, 'modalNewsletter': false, 'modalSearch': false, 'stickyMenu': false, 'navigationOpen': false, 'scrollTop': false }">
+    <div x-show="loaded"
+        x-init="window.addEventListener('DOMContentLoaded', () => {setTimeout(() => loaded = false, 500)})"
+        class="fixed left-0 top-0 z-999999 flex h-screen w-screen items-center justify-center bg-white">
+        <div class="h-16 w-16 animate-spin rounded-full border-4 border-solid border-primary border-t-transparent">
+        </div>
     </div>
-
-    <script>
-        calculate = (vals) => {
-            const pythagorean = `<math><mrow><msup>
-                                        <mi>a</mi>
-                                        <mn>2</mn>
-                                        </msup>
-                                        <mo>+</mo>
-                                        <msup>
-                                        <mi>b</mi>
-                                        <mn>2</mn>
-                                        </msup>
-                                        <mo>=</mo>
-                                        <msup>
-                                        <mi>c</mi>
-                                        <mn>2</mn>
-                                        </msup></mrow></math>`
-            const b = parseInt(vals.b);
-            const t = parseInt(vals.t);
-            const A = 1;
-            const Area = parseFloat((b ** 2) - ((b - (0.2 * t)) ** 2));
-            const LL = ((Area * (10 ** -4)) * 9.81 * 7.85) + vals.H
-
-            const result = {
-                formulas: {
-                    Pythagorean: { annotation: pythagorean }
-                },
-                calculations: {
-                    "Area": { val: Area, unit: "" },
-                    "LL": { val: LL, unit: "" }
-                },
-                output: {
-                    Fx: { val: vals.H * vals.L, unit: "kN" },
-                    Mz: { val: ((vals.L ** 2) / 2) * LL, unit: "kN/m" },
-                    Fy: { val: LL * vals.L, unit: "kN" }
-                }
-            };
-            return result;
-        }
-
-        convertToTable = (data) => {
-            console.log(data);
-            let formulas = "";
-            let rows = "";
-            let calcs = "";
-
-            convertOutputs = (el) => {
-
-                const key = el[0];
-                const val = el[1];
-
-                if (val.hasOwnProperty("val") && val.hasOwnProperty("unit")) {
-                    return `<tr>
-                        <td class="p-2 whitespace-nowrap font-medium text-gray-800">${key}</td>
-                        <td class="p-2 whitespace-nowrap">${val.val}</td>
-                        <td class="p-2 whitespace-nowrap">${val.unit}</td>
-                        </tr>`;
-                } else console.log(key, val)
-            }
-
-            convertCalculations = (cal) => {
-                return `<p>${cal[0]} : ${cal[1].val}  ${cal[1].unit}</p>`;
-            }
-
-            convertFormulas = (fr) => {
-                return `<p>${fr[0]} : ${fr[1].annotation}</p>`;
-            }
-
-            Object.entries(data.output)
-                .forEach(el => {
-                    rows += convertOutputs(el);
-                });
-            Object.entries(data.calculations)
-                .forEach(el => {
-                    calcs += convertCalculations(el);
-                });
-            Object.entries(data.formulas)
-                .forEach(fr => {
-                    formulas += convertFormulas(fr);
-                })
-
-
-
-            let result = "";
-
-            return `
-
-            <div>
-                ${calcs}
+    <header class="fixed left-0 top-0 w-full z-9999 bg-white py-7 lg:py-0 transition-all ease-in-out duration-300"
+        :class="{ 'shadow !py-4 lg:!py-0' : stickyMenu }"
+        @scroll.window="stickyMenu = (window.scrollY > 0) ? true : false">
+        <div class="max-w-[1170px] mx-auto px-4 sm:px-8 xl:px-0 lg:flex items-center justify-between relative">
+            <div class="w-full lg:w-3/12 flex items-center justify-between object-contain">
+                <div>
+                    <img src="images/logo.svg" alt="Logo" class="h-full w-20" />
                 </div>
+                <button id="menuToggler" aria-label="button for menu toggle" class="lg:hidden block"
+                    @click="navigationOpen = !navigationOpen">
+                    <span class="block relative cursor-pointer w-5.5 h-5.5">
+                        <span class="du-block absolute right-0 w-full h-full">
+                            <span
+                                class="block relative top-0 left-0 bg-dark rounded-sm w-0 h-0.5 my-1 ease-in-out duration-200 delay-[0]"
+                                :class="{ '!w-full delay-300': !navigationOpen }"></span>
+                            <span
+                                class="block relative top-0 left-0 bg-dark rounded-sm w-0 h-0.5 my-1 ease-in-out duration-200 delay-150"
+                                :class="{ '!w-full delay-400': !navigationOpen }"></span>
+                            <span
+                                class="block relative top-0 left-0 bg-dark rounded-sm w-0 h-0.5 my-1 ease-in-out duration-200 delay-200"
+                                :class="{ '!w-full delay-500': !navigationOpen }"></span>
+                        </span>
+                        <span class="du-block absolute right-0 w-full h-full rotate-45">
+                            <span
+                                class="block bg-dark rounded-sm ease-in-out duration-200 delay-300 absolute left-2.5 top-0 w-0.5 h-full"
+                                :class="{ '!h-0 delay-[0]': !navigationOpen }"></span>
+                            <span
+                                class="block bg-dark rounded-sm ease-in-out duration-200 delay-400 absolute left-0 top-2.5 w-full h-0.5"
+                                :class="{ '!h-0 dealy-200': !navigationOpen }"></span>
+                        </span>
+                    </span>
+                </button>
+
+            </div>
+            <div class="w-full lg:w-9/12 h-0 lg:h-auto invisible lg:visible lg:flex items-center justify-between"
+                :class="{ '!visible bg-white shadow-lgrelative !h-auto max-h-[400px] overflow-y-scroll rounded-md mt-4 p-7.5': navigationOpen }">
+                <nav>
+                    <ul class="flex lg:items-center flex-col lg:flex-row gap-5 lg:gap-10">
+                        <li class="group relative lg:py-6.5" :class="{ 'lg:!py-4' : stickyMenu }"
+                            x-data="{ dropdown: false }">
+                            <a href="#home" class="hover:text-dark flex items-center justify-between gap-3
+                            bg-gradient-to-r from-dark to-dark bg-[length:0px_1px] bg-left-bottom bg-no-repeat transition-[background-size] duration-500 hover:bg-[length:100%_3px] group-hover:bg-[length:100%_1px]
+                            ">
+                                Home
+                            </a>
+                        </li>
+                        <li class="group relative lg:py-6.5" :class="{ 'lg:!py-4' : stickyMenu }"
+                            x-data="{ dropdown: false }">
+                            <a href="#services" class="hover:text-dark flex items-center justify-between gap-3
+                            bg-gradient-to-r from-dark to-dark bg-[length:0px_1px] bg-left-bottom bg-no-repeat transition-[background-size] duration-500 hover:bg-[length:100%_3px] group-hover:bg-[length:100%_1px]
+                            ">
+                                Services
+                            </a>
+                        </li>
+                        <li class="group relative lg:py-6.5" :class="{ 'lg:!py-4' : stickyMenu }"
+                            x-data="{ dropdown: false }">
+                            <a href="#contactUs"
+                                class="hover:text-dark flex items-center justify-between gap-3
+                            bg-gradient-to-r from-dark to-dark bg-[length:0px_1px] bg-left-bottom bg-no-repeat transition-[background-size] duration-500 hover:bg-[length:100%_3px] group-hover:bg-[length:100%_1px]                           ">
+                                Contact
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+                <div class="flex flex-wrap items-center gap-8.5 mt-7 lg:mt-0">
+                    <div class="flex items-center gap-1.5">
+                        <a id="linkedinBtn" aria-label="linkedin social link" href="index.html#"
+                            class="flex items-center justify-center w-7.5 h-7.5 rounded-full hover:bg-gray-2 lg:transition-all lg:duration-200 hover:text-dark">
+                            <svg class="fill-current" width="19" height="18" viewBox="0 0 19 18" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M5.50004 3.50068C5.49976 4.11141 5.12924 4.661 4.56318 4.89028C3.99713 5.11957 3.34858 4.98277 2.92335 4.54439C2.49812 4.10601 2.38114 3.45359 2.62755 2.89478C2.87397 2.33597 3.43458 1.98236 4.04504 2.00068C4.85584 2.02502 5.5004 2.68951 5.50004 3.50068ZM5.54504 6.11068H2.54504V15.5007H5.54504V6.11068ZM10.2851 6.11068H7.30004V15.5007H10.2551V10.5732C10.2551 7.82816 13.8326 7.57316 13.8326 10.5732V15.5007H16.7951V9.55316C16.7951 4.92568 11.5001 5.09818 10.2551 7.37066L10.2851 6.11068Z"
+                                    fill />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+
+        <section id="home" class="rounded-b-[50px] relative overflow-hidden z-10 pb-15 pt-34">
             <div>
-                <table class="table-auto w-[50%] mt-2">
-                        <thead class="text-left text-lg font-semibold uppercase text-gray-400 bg-gray-50">
-                            <tr>
-                            <th class="p-2 whitespace-nowrap">Parameter</th>
-                            <th class="p-2 whitespace-nowrap">Value</th>
-                            <th class="p-2 whitespace-nowrap">Unit</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                          ${rows}
-                        </tbody>
-                        </table>
+                <div class="absolute bottom-0 left-0 rounded-b-[50px] w-full h-full bg-gray"></div>
+                <div class="hidden lg:block absolute bottom-0 left-0 rounded-b-[50px] w-full h-full">
+                    <img src="images/hero-bg.svg" alt="hero" />
+                </div>
             </div>
 
+            <div class="rounded-[20px] relative overflow-hidden z-10">
+                <div>
+                    <div class="absolute bottom-0 left-0 rounded-[20px] w-full h-full bg-gray"></div>
+                    <div class="absolute bottom-0 left-0 rounded-[20px] w-full h-full">
+                        <img class="absolute bottom-0" src="images/hero-bg-02.svg" alt="hero">
+                    </div>
+                </div>
+
+                <div class="max-w-[880px] mx-auto px-4 sm:px-8 lg:px-0 py-7.5 sm:py-10 lg:py-15 relative z-1">
+                    <div class="flex flex-col sm:flex-row items-center gap-7.5 lg:gap-15">
+                        <div
+                            class="max-w-[277px] w-full h-[277px] rounded-full flex items-center justify-center border border-gray-3">
+                            <div class="max-w-[165px] w-full h-[165px] shadow-img rounded-full overflow-hidden">
+                                <img src="images/hero-01.png" alt="user">
+                            </div>
+                        </div>
+                        <div class="max-w-[593px] w-full ">
+                            <h1 class="text-2xl sm:text-4xl lg:text-heading-3 xl:text-heading-2 text-dark mb-3.5">
+                                <span class="font-bold"> RevoMann</span>
+                            </h1>
+                            <div class="space-y-4">
+                                <div class="text-lg space-y-2">
+
+                                    <p> &lt;&gt;&nbsp; Automation and development of IT solutions for both civil
+                                        engineering
+                                        and general applications</p>
+                                    <p>&lt;&gt;&nbsp; Structural analysis, design of specific and industrial structures
+                                    </p>
+                                    <p>&lt;&gt;&nbsp; Research and coordination of projects in collaboration with our
+                                        partners
+                                        from practice and academia</p>
+
+                                </div>
+
+                                <p class="italic">
+                                    Our philosophy: solution oriented, thinking out of the box and ahead,
+                                    easy to understand and use
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section
+            class="rounded-b-[50px] relative overflow-hidden z-10 pb-15 pt-34 max-w-[1170px] mx-auto px-4 sm:px-8 xl:px-0">
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-y-11 gap-x-7.5">
+
+                <div class="group">
+                    <h3>
+                        <a href="" class="block text-dark font-bold text-xl mb-3.5">
+                            <span class="flex ">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    strokeWidth={1.5} stroke="#0c3f6cff" class="w-8 h-8 mr-2">
+                                    <path strokeLinecap="round" strokeLinejoin="round"
+                                        d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                Structural Design
+                            </span>
+                        </a>
+                    </h3>
+                    <p>
+                        Structural Design of Specific and
+                        Industrial Structures.
+                    </p>
+                    <div class="mt-6 overflow-hidden rounded-[10px] transition-all group-hover:scale-105">
+                        <a>
+                            <img src="Final Photos/Home/Industrial and specific.png" alt="image" class="w-full">
+                        </a>
+                    </div>
+                </div>
+                <div class="group">
+                    <h3>
+                        <a href="" class="block text-dark font-bold text-xl mb-3.5">
+                            <span class="flex ">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    strokeWidth={1.5} stroke="#0c3f6cff" class="w-8 h-8 mr-2">
+                                    <path strokeLinecap="round" strokeLinejoin="round"
+                                        d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                Fire Design
+                            </span>
+                        </a>
+                    </h3>
+                    <p>
+                        Fire safety, fire design and <br> materials test.
+                    </p>
+                    <div class="mt-6 overflow-hidden rounded-[10px] transition-all group-hover:scale-105">
+                        <a>
+                            <img src="Final Photos/Home/Home_Fire.png" alt="image" class="w-full">
+                        </a>
+                    </div>
+                </div>
+
+                <div class="group">
+                    <h3>
+                        <a href="" class="block text-dark font-bold text-xl mb-3.5">
+                            <span class="flex ">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    strokeWidth={1.5} stroke="#0c3f6cff" class="w-8 h-8 mr-2">
+                                    <path strokeLinecap="round" strokeLinejoin="round"
+                                        d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                Automation and IT
+                            </span>
+                        </a>
+                    </h3>
+                    <p>
+                        Automation and IT solutions for <br>
+                        civil engineering.
+                    </p>
+                    <div class="mt-6 overflow-hidden rounded-[10px] transition-all group-hover:scale-105">
+                        <a>
+                            <img src="Final Photos/Home/Home_Automation-Structures.png" alt="image" class="w-full">
+                        </a>
+                    </div>
+                </div>
+
+                <div class="group">
+                    <h3>
+                        <a href="" class="block text-dark font-bold text-xl mb-3.5">
+                            <span class="flex ">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    strokeWidth={1.5} stroke="#0c3f6cff" class="w-8 h-8 mr-2">
+                                    <path strokeLinecap="round" strokeLinejoin="round"
+                                        d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                Custom Solutions
+                            </span>
+                        </a>
+                    </h3>
+                    <p>
+                        Specific topics <br> in structural engineering.
+                    </p>
+                    <div class="mt-6 overflow-hidden rounded-[10px] transition-all group-hover:scale-105">
+                        <a>
+                            <img src="Final Photos/Home/Home_Specific-FINAL.png" alt="image" class="w-full">
+                        </a>
+                    </div>
+                </div>
+
+                <div class="group">
+                    <h3>
+                        <a href="" class="block text-dark font-bold text-xl mb-3.5">
+                            <span class="flex ">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    strokeWidth={1.5} stroke="#0c3f6cff" class="w-8 h-8 mr-2">
+                                    <path strokeLinecap="round" strokeLinejoin="round"
+                                        d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                Research
+                            </span>
+                        </a>
+                    </h3>
+                    <p>
+                        Structural behavior and <br> material tests.
+                    </p>
+                    <div class="mt-6 overflow-hidden rounded-[10px] transition-all group-hover:scale-105">
+                        <a>
+                            <img src="Final Photos/Home/Home_Research-E.png" alt="image" class="w-full">
+                        </a>
+                    </div>
+                </div>
+
+                <div class="group">
+                    <h3>
+                        <a href="" class="block text-dark font-bold text-xl mb-3.5">
+                            <span class="flex ">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    strokeWidth={1.5} stroke="#0c3f6cff" class="w-8 h-8 mr-2">
+                                    <path strokeLinecap="round" strokeLinejoin="round"
+                                        d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                Tailored IT Solutions
+                            </span>
+                        </a>
+                    </h3>
+                    <p>
+                        Solutions customized for operations and <br> businesses.
+                    </p>
+                    <div class="mt-6 overflow-hidden rounded-[10px] transition-all group-hover:scale-105">
                         <div>
-                            <p>${formulas}</p>
+                            <img src="Final Photos/Home/custom-IT.jpg" alt="image" class="w-full">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <div id="services"></div>
+
+        <!-- structural -->
+        <section >
+            <div class="mx-auto max-w-[1170px] px-4 sm:px-8 xl:px-0 relative z-1">
+                <div class="flex flex-wrap gap-x-7.5 gap-y-9">
+                    <div
+                        class="max-w-[1170px] w-full flex flex-col lg:flex-row lg:items-center gap-7.5 lg:gap-11 bg-white shadow-1 rounded-xl p-4 lg:p-2.5">
+                        <div class="lg:max-w-[536px] w-full">
+                            <div class="flex flex-shrink items-center justify-center">
+                                <div class="flex flex-col">
+                                    <img src="Final Photos/Specific and Industrial/Home_Steel-b.bmp.png" alt="hero" />
+                                    <h6 class="text-center">Steel chimneys with identical
+                                        and variable diameters.</h6>
+                                </div>
+                                <!-- <div class="flex flex-col w-1/2">
+                                    <img src="Final Photos/Specific and Industrial/Home_Steel-b.bmp.png" alt="hero" />
+                                    <h6 class="text-center"></h6>
+                                </div> -->
+                            </div>
+                        </div>
+                        <div class="lg:max-w-[540px] w-full">
+                            <!-- <a href="category.html"
+                                class="inline-flex text-purple-dark bg-purple/[0.08] font-medium text-sm py-1 px-3 rounded-full mb-4">Lifestyle</a> -->
+                            <h1 class="font-bold text-custom-4 xl:text-heading-4 text-dark mb-4">
+                                <a>
+                                    Structural design of specific and industrial structures
+                            </h1>
+                            <div class="space-y-4">
+                                <p class="max-w-[524px]">
+                                    The focus of structural design by RevoMann GmbH is on structures, where
+                                    the challenges arise due to complexity of the corresponding analytical and
+                                    numerical theories and specificness of the structure itself.
+                                    These, more commonly, include combined form of shell, plate and beam
+                                    structures.
+                                </p>
+                                <p>
+                                    In this regard, application of enhanced methods, such as finite element
+                                    method, should be carried out carefully. This is only possible by under-
+                                    standing different aspects of both modelling and structural engineering.
+                                    Our main focus in design of industrial and specific structures are:
+                                    different types of containers, industrial chimneys, platforms, pressure vessels,
+                                    silos, spiral staircase, tanks as well as different types of foundations.
+                                </p>
+                                <div>
+                                    <p>
+                                        Steel stack under wind
+                                    </p>
+                                    <button @click="showVideo('Final videos/25-STEEL-STACK-FINAL-B.mp4')">
+                                        <div class="block">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                hieght="20" width="20" stroke-width="1.5" stroke="currentColor"
+                                                class="w-6 h-6">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M15.91 11.672a.375.375 0 0 1 0 .656l-5.603 3.113a.375.375 0 0 1-.557-.328V8.887c0-.286.307-.466.557-.327l5.603 3.112Z" />
+                                            </svg>
+                                            Play video
+                                        </div>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- fire -->
+        <section>
+            <div class="mx-auto max-w-[1170px] px-4 sm:px-8 xl:px-0 relative z-1">
+                <div class="flex flex-wrap gap-x-7.5 gap-y-9">
+                    <div
+                        class="max-w-[1170px] w-full flex flex-col lg:flex-row lg:items-center gap-7.5 lg:gap-11 bg-white shadow-1 rounded-xl p-4 lg:p-2.5">
+                        <div class="lg:max-w-[540px] w-full">
+                            <!-- <a href="category.html"
+                                class="inline-flex text-purple-dark bg-purple/[0.08] font-medium text-sm py-1 px-3 rounded-full mb-4">Lifestyle</a> -->
+                            <h1 class="font-bold text-custom-4 xl:text-heading-4 text-dark mb-4">
+                                <a>
+                                    Fire safety material and fire design.
+                            </h1>
+                            <div class="space-y-4">
+                                <p class="max-w-[524px]">
+                                    Successful fire safety design requires an understanding of a wide range of issues
+                                    and components, and the interactions between them such as, fire source, smoke
+                                    movement, heat transfer to the building structure, detection, human behavior and
+                                    toxicity.
+                                </p>
+                                <p>
+                                    We mainly focus on structural fire design of structures; from thermal analysis to
+                                    evaluate structural performance using different design methods. These normally
+                                    include cases that are specific: either not covered by codes or the results via
+                                    simplified methods are not, economically, profitable.
+                                    We also coordinate and collaborate in fire safety and design projects as well as
+                                    material tests at elevated temperatures in collaboration with our partners from
+                                    practice and academia in the following subjects:
+                                <ul>
+                                    <li>- Tests for materials exposed to elevated temperatures;</li>
+                                    <li>- Tests for members exposed to elevated temperatures;</li>
+                                    <li>- Passive and active fire design;</li>
+                                    <li>- Fire and smoke development simulation.</li>
+                                </ul>
+                                </p>
+                                <div>
+                                    <p>
+                                        Concrete facade under fire
+                                    </p>
+                                    <button @click="showVideo('Final videos/Concrete-Facade-Fire1.mp4')">
+                                        <div class="block">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                hieght="20" width="20" stroke-width="1.5" stroke="currentColor"
+                                                class="w-6 h-6">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M15.91 11.672a.375.375 0 0 1 0 .656l-5.603 3.113a.375.375 0 0 1-.557-.328V8.887c0-.286.307-.466.557-.327l5.603 3.112Z" />
+                                            </svg>
+                                            Play video
+                                        </div>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="lg:max-w-[536px] w-full">
+                            <div class="flex flex-col">
+                                <img class="w-full" src="Final Photos/Fire-Design/Kreissttze-Heiá-b.png" alt="hero" />
+                                <h6 class="text-center">Nonlinear analysis of a hollow-circular column exposed
+                                    to fire</h6>
                             </div>
 
-                        ` ;
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-            return result;
-        }
+        <!-- automation -->
+        <section>
+            <div class="mx-auto max-w-[1170px] px-4 sm:px-8 xl:px-0 relative z-1">
+                <div class="flex flex-wrap gap-x-7.5 gap-y-9">
+                    <div
+                        class="max-w-[1170px] w-full flex flex-col lg:flex-row lg:items-center gap-7.5 lg:gap-11 bg-white shadow-1 rounded-xl p-4 lg:p-2.5">
+                        <div class="lg:max-w-[536px] w-full">
+                            <div class="flex flex-col">
+                                <img class="w-full"
+                                    src="Final Photos/Automation_Civil/Home_Automation-Structures-final.png"
+                                    alt="hero" />
+                                <h6 class="text-center">Automation of load transfer from 3D-model to 2D-model for design
+                                    purposes.</h6>
+                            </div>
+                        </div>
+                        <div class="lg:max-w-[540px] w-full">
+                            <!-- <a href="category.html"
+                                class="inline-flex text-purple-dark bg-purple/[0.08] font-medium text-sm py-1 px-3 rounded-full mb-4">Lifestyle</a> -->
+                            <h1 class="font-bold text-custom-4 xl:text-heading-4 text-dark mb-4">
+                                <a>
+                                    Automation and IT solutions for civil engineering.
+                            </h1>
+                            <div class="space-y-4">
+                                <p class="max-w-[524px]">
+                                    We provide solutions based on the needs of our clients in the practice. As
+                                    an example, the main aim to automate structural calculations is to pro-
+                                    vide simplified user interfaces for every day use of design and check/con-
+                                    trol engineers.
+                                </p>
+                                <p class="max-w-[524px]">
+                                    Further, automation of work flows as well as other related IT solutions
+                                    for companies with main focus on architectural and structural design as
+                                    well as material production or verifications are main scope of our work.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-        renderFormulas = (data) => {
-            return ``
-        }
-        $("#compile-button").click(() => {
 
-            $("#report-box").empty();
-            $("#report-box").html(`<i class="fa fa-spinner fa-spin fa-3x fa-fw text-blue-200"></i>`);
-            setTimeout(() => {
-                const vals = {
-                    L: parseInt($("#beam-length").val()),
-                    t: parseInt($("#beam-cs-tickness").val()),
-                    b: parseInt($("#beam-side").val()),
-                    H: parseInt($("#line-load").val())
-                }
+        <!-- specific solutions -->
+        <section>
+            <div class="mx-auto max-w-[1170px] px-4 sm:px-8 xl:px-0 relative z-1">
+                <div class="flex flex-wrap gap-x-7.5 gap-y-9">
+                    <div
+                        class="max-w-[1170px] w-full flex flex-col lg:flex-row lg:items-center gap-7.5 lg:gap-11 bg-white shadow-1 rounded-xl p-4 lg:p-2.5">
+                        <div class="lg:max-w-[540px] w-full">
+                            <h1 class="font-bold text-custom-4 xl:text-heading-4 text-dark mb-4">
+                                <a>
+                                    Specific topics in structural engineering.
+                            </h1>
+                            <div class="space-y-4">
+                                <p class="max-w-[524px]">
+                                    There are still number of specific topics that irrespective of use of numerical
+                                    methods, challenge engineers in a high level. Some of related topics that have been
+                                    the focus of RevoMann GmbH are:
+                                </p>
+                                <ul>
+                                    <li> - Nonlinear crack development of concrete;
+                                    </li>
+                                    <li>- Nonlinear analysis of reinforced concrete foundations with piles or anchors;
+                                    </li>
+                                    <li>- Nonlinear analysis of reinforced concrete structures at elevated temperatures
+                                        above 200°C;</li>
+                                    <li>- Eigenfrequency analysis and response of structures;
+                                    </li>
+                                    <li>- Seismic analysis of asymmetric reinforced concrete structures using 3D-models;
+                                    </li>
+                                    <li>- Seismic analysis of steel structures using 3D-models;
+                                    </li>
+                                    <li>- Buckling analysis of plate and shell structures using FE;
+                                    </li>
+                                    <li>- Buckling analysis of steel cross-sections at elevated temperatures; </li>
+                                    <li>- Connection design;</li>
+                                    <li>- ...</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="lg:max-w-[536px] w-full">
+                            <div class="flex flex-col">
+                                <img class="w-full" src="Final Photos/Specific topics/F7-N1.png" alt="hero" />
+                                <h6 class="text-center">Reinforced concrete foundation with 6 piles.</h6>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-                $("#report-box").empty();
-                $("#report-box").append(`<img src="./images/client-logo.png">`);
-                $("#report-box").append(convertToTable(calculate(vals)));
-                $("#report-box").append(`<img src="./images/sample.png">`);
 
-            }, 2000)
-        })
+        <!-- structural -->
+        <section>
+            <div class="mx-auto max-w-[1170px] px-4 sm:px-8 xl:px-0 relative z-1">
+                <div class="flex flex-wrap gap-x-7.5 gap-y-9">
+                    <div
+                        class="max-w-[1170px] w-full flex flex-col lg:flex-row lg:items-center gap-7.5 lg:gap-11 bg-white shadow-1 rounded-xl p-4 lg:p-2.5">
+                        <div class="lg:max-w-[536px] w-full">
 
-        $("#pdf-button").click(() => {
-            console.log("clicked");
+                            <div class="lg:max-w-[536px] w-full">
+                                <div class="flex flex-col">
+                                    <img class="w-full" src="Final Photos/Research/Home_Research-E.png" alt="hero" />
+                                    <h6 class="text-center">From left to right: standing pressure vessel, blower
+                                        structure and section of tunnel under fire</h6>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="lg:max-w-[540px] w-full">
+                            <h1 class="font-bold text-custom-4 xl:text-heading-4 text-dark mb-4">
+                                <a>
+                                    Research.
+                            </h1>
+                            <div class="space-y-4">
+                                <p class="max-w-[524px]">
+                                    We conduct, collaborate and coordinate research projects with our partners
+                                    from practice and academia.
+                                    These cover;
+                                    - Structural and behavioral performance of structure, member, or interac-
+                                    tion between two or multiple structures;
+                                    - Investigation and comparison on behavior of industrial structures such as
+                                    chimneys, cooling towers, silos, standing pressure vessels and underground
+                                    tanks;
+                                    - Fire design: from material and member fire tests to numerical investiga-
+                                    tion and implementation into practice.
+                                </p>
+                            </div>
+                            <div>
+                                <p>
+                                    Standing pressure vessel under self-weight
+                                </p>
+                                <button
+                                    @click="showVideo('Final videos/Standing-Pressure-Vessel-Max Tens Memb stress.mp4')">
+                                    <div class="block">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                            hieght="20" width="20" stroke-width="1.5" stroke="currentColor"
+                                            class="w-6 h-6">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M15.91 11.672a.375.375 0 0 1 0 .656l-5.603 3.113a.375.375 0 0 1-.557-.328V8.887c0-.286.307-.466.557-.327l5.603 3.112Z" />
+                                        </svg>
+                                        Play video
+                                    </div>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-            // Default export is a4 paper, portrait, using millimeters for units
-            const element = document.getElementById('report-box');
-            // Choose the element and save the PDF for your user.
-            html2pdf().from(element).save();
-        })
+        <!-- Tailord -->
+        <section>
+            <div class="mx-auto max-w-[1170px] px-4 sm:px-8 xl:px-0 relative z-1">
+                <div class="flex flex-wrap gap-x-7.5 gap-y-9">
+                    <div
+                        class="max-w-[1170px] w-full flex flex-col lg:flex-row lg:items-center gap-7.5 lg:gap-11 bg-white shadow-1 rounded-xl p-4 lg:p-2.5">
+                        <div class="lg:max-w-[540px] w-full">
+                            <!-- <a href="category.html"
+                                class="inline-flex text-purple-dark bg-purple/[0.08] font-medium text-sm py-1 px-3 rounded-full mb-4">Lifestyle</a> -->
+                            <h1 class="font-bold text-custom-4 xl:text-heading-4 text-dark mb-4">
+                                <a>
+                                    Custom made, and tailored to your specific needs.
+                            </h1>
+                            <div class="space-y-4">
+                                <p class="max-w-[524px]">
+                                    On customers demand, we have the technical ability to develop customized automation
+                                    and various solutions for IT requirements of businesses and organizations.
+                                    This include development of new solutions and providing integration with already
+                                    existing services in the market. </p>
+                            </div>
+                        </div>
+                        <div class="lg:max-w-[536px] w-full">
+                            <div class="flex flex-col">
+                                <img class="w-full" src="Final Photos/CustomIT/script.jpg" alt="hero" />
+                                <h6 class="text-center">Custom Design script for CAD solutions in Python </h6>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-        $("#print-button").click(() => {
-            console.log("clicked");
-            window.print();
-        })
+
+        <!-- address  -->
+        <section id="contactUs">
+            <div class="mx-auto max-w-[1170px] w-full px-4 sm:px-8 xl:px-0 relative z-1">
+                <div class="bg-white shadow-1 rounded-[10px] py-9 px-4 sm:px-8 xl:px-10">
+                    <div class="flex flex-wrap items-left justify-between gap-10">
+
+                        <div class="w-full space-y-2">
+                            <div class="text-center">
+                                <p> <strong>Contact Us</strong></p>
+                                <p>
+                                    Please send us your requests / questions at
+                                </p>
+                                <p class="text-blue-500">info@revomann.de</p>
+                            </div>
+                            <p class="text-center">Our Address</p>
+                            <p class="text-center">
+                                132 Lütticher Street
+                                Düsseldorf, NRW 40547, Germany
+                            </p>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- contact form  -->
+        <section>
+            <div class="mx-auto max-w-[1170px] w-full px-4 sm:px-8 xl:px-0 relative z-1">
+                <div class="bg-white shadow-1 rounded-[10px] py-9 px-4 sm:px-8 xl:px-10">
+                    <div class="flex flex-wrap items-left justify-between gap-10">
+                        <iframe class="w-full aspect-video float-left"
+                            src="https://docs.google.com/forms/d/e/1FAIpQLScKfPkYkx3qGikKrfLQyNsUGj2uBwVC8aprs3hYOuXAxtnFow/viewform?embedded=true"
+                            frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+                    </div>
+                </div>
+            </div>
+        </section>
 
 
 
+    </main>
+
+
+    <footer class="relative z-10 py-8 border-t border-gray-3">
+        <div class="max-w-[1170px] mx-auto px-4 sm:px-8 xl:px-0">
+            <div
+                class="flex flex-wrap items-center justify-center flex-col gap-4 lg:gap-0 lg:flex-row lg:justify-between">
+                <div>
+                    <p class="text-custom-sm">&copy; 2024 RevoMann. All rights reserved</p>
+                </div>
+                <div>
+                    <!-- 
+  <ul class="flex flex-wrap items-center gap-2.5">
+                        <li>
+                            <a class="group leading-none flex text-custom-sm ease-in duration-200 hover:text-dark">
+                                <span
+                                    class="bg-gradient-to-r from-dark to-dark bg-[length:0px_1px] bg-left-bottom bg-no-repeat transition-[background-size] duration-500 hover:bg-[length:100%_3px] group-hover:bg-[length:100%_1px]">Privacy</span>
+                            </a>
+                        </li>
+                        <li>
+                            <span class="flex w-[3px] h-[3px] rounded-full bg-dark-2"></span>
+                        </li>
+                        <li>
+                            <a href="privacy-policy.html"
+                                class="group leading-none flex text-custom-sm ease-in duration-200 hover:text-dark">
+                                <span
+                                    class="bg-gradient-to-r from-dark to-dark bg-[length:0px_1px] bg-left-bottom bg-no-repeat transition-[background-size] duration-500 hover:bg-[length:100%_3px] group-hover:bg-[length:100%_1px]">Terms</span>
+                            </a>
+                        </li>
+                        <li>
+                            <span class="flex w-[3px] h-[3px] rounded-full bg-dark-2"></span>
+                        </li>
+                        <li>
+                            <a href="signup.html"
+                                class="group leading-none flex text-custom-sm ease-in duration-200 hover:text-dark">
+                                <span
+                                    class="bg-gradient-to-r from-dark to-dark bg-[length:0px_1px] bg-left-bottom bg-no-repeat transition-[background-size] duration-500 hover:bg-[length:100%_3px] group-hover:bg-[length:100%_1px]">Contact</span>
+                            </a>
+                        </li>
+                        <li>
+                            <span class="flex w-[3px] h-[3px] rounded-full bg-dark-2"></span>
+                        </li>
+                        <li>
+                            <a href="signup.html"
+                                class="group leading-none flex text-custom-sm ease-in duration-200 hover:text-dark">
+                                <span
+                                    class="bg-gradient-to-r from-dark to-dark bg-[length:0px_1px] bg-left-bottom bg-no-repeat transition-[background-size] duration-500 hover:bg-[length:100%_3px] group-hover:bg-[length:100%_1px]">Contribute</span>
+                            </a>
+                        </li>
+                    </ul>
+
+                    -->
+                  
+                </div>
+                <div>
+                    <div class="flex items-center gap-3">
+                        <p class="font-medium text-custom-sm text-dark">Follow Us:</p>
+
+                        <div class="flex items-center gap-1.5"> 
+                            <a id="linkedinFooterBtn" aria-label="linkedin social link" href="index.html#"
+                                class="flex items-center justify-center w-7.5 h-7.5 rounded-full hover:bg-gray-2 lg:transition-all lg:ease-linear lg:duration-300 hover:text-dark">
+                                <svg class="fill-current" width="19" height="18" viewBox="0 0 19 18" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M5.50004 3.50068C5.49976 4.11141 5.12924 4.661 4.56318 4.89028C3.99713 5.11957 3.34858 4.98277 2.92335 4.54439C2.49812 4.10601 2.38114 3.45359 2.62755 2.89478C2.87397 2.33597 3.43458 1.98236 4.04504 2.00068C4.85584 2.02502 5.5004 2.68951 5.50004 3.50068ZM5.54504 6.11068H2.54504V15.5007H5.54504V6.11068ZM10.2851 6.11068H7.30004V15.5007H10.2551V10.5732C10.2551 7.82816 13.8326 7.57316 13.8326 10.5732V15.5007H16.7951V9.55316C16.7951 4.92568 11.5001 5.09818 10.2551 7.37066L10.2851 6.11068Z"
+                                        fill />
+                                </svg>
+                            </a>
+                          
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <button
+        class="hidden items-center justify-center w-10 h-10 rounded-[4px] shadow-solid-5 bg-dark hover:opacity-95 fixed bottom-8 right-8 z-999"
+        @click="window.scrollTo({top: 0, behavior: 'smooth'})"
+        @scroll.window="scrollTop = (window.pageYOffset > 50) ? true : false" :class="{ '!flex' : scrollTop }">
+        <svg class="fill-white w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+            <path
+                d="M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z" />
+        </svg>
+    </button>
+    <div id="video-modal"
+        class="hidden fixed w-full h-100 inset-0 z-50 overflow-hidden flex justify-center items-center animated fadeIn faster"
+        style="background: rgba(0,0,0,.7);">
+        <div
+            class="border border-teal-500 shadow-lg modal-container bg-white w-11/12 md:max-w-md mx-auto rounded shadow-lg z-50 overflow-y-auto">
+            <div class="modal-content py-4 text-left px-6">
+                <!--Title-->
+                <div class="flex justify-between items-center pb-3">
+                    <p class="text-xl font-bold"></p>
+                    <div class="modal-close cursor-pointer z-50" @click="closeVid">
+                        <svg class="fill-current text-black" xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                            viewBox="0 0 18 18">
+                            <path
+                                d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z">
+                            </path>
+                        </svg>
+                    </div>
+                </div>
+                <!--Body-->
+                <div class="my-5">
+                    <video src="" id="video-player" controls autoplay>
+                    </video>
+                </div>
+                <!--Footer-->
+                <div class="flex justify-end pt-2">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script defer src="js/bundle.js">
     </script>
 
-</body>
+    <script>
+        function showVideo(src) {
+            console.log("video loading", src);
+            const videoModal = document.getElementById("video-modal");
+            var video = document.getElementById("video-player");
+            videoModal.classList.remove('hidden');
+            video.play();
+            video.setAttribute('src', src);
 
+            video.currentTime = 0;
+
+        };
+    </script>
+    <script>
+        function closeVid(e) {
+            const videoModal = document.getElementById("video-modal");
+            var video = document.getElementById("video-player");
+            videoModal.classList.add('hidden');
+            video.pause();
+            video.currentTime = 0;
+            video.setAttribute('src', "");
+            console.log("video closing ");
+        };
+        closeVid();
+    </script>
+</body>
 
 </html>
